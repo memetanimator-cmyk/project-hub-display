@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as OpenRouteImport } from './routes/open'
+import { Route as ClosedRouteImport } from './routes/closed'
 import { Route as IndexRouteImport } from './routes/index'
 
 const OpenRoute = OpenRouteImport.update({
   id: '/open',
   path: '/open',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClosedRoute = ClosedRouteImport.update({
+  id: '/closed',
+  path: '/closed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/closed': typeof ClosedRoute
   '/open': typeof OpenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/closed': typeof ClosedRoute
   '/open': typeof OpenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/closed': typeof ClosedRoute
   '/open': typeof OpenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/open'
+  fullPaths: '/' | '/closed' | '/open'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/open'
-  id: '__root__' | '/' | '/open'
+  to: '/' | '/closed' | '/open'
+  id: '__root__' | '/' | '/closed' | '/open'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClosedRoute: typeof ClosedRoute
   OpenRoute: typeof OpenRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/open'
       fullPath: '/open'
       preLoaderRoute: typeof OpenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/closed': {
+      id: '/closed'
+      path: '/closed'
+      fullPath: '/closed'
+      preLoaderRoute: typeof ClosedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClosedRoute: ClosedRoute,
   OpenRoute: OpenRoute,
 }
 export const routeTree = rootRouteImport
