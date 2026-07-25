@@ -1,24 +1,33 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { projects } from "@/lib/projects";
+import { ProjectGrid } from "@/components/project-card";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Dashboard — Project Tracker" },
+      { name: "description", content: "Lihat proyek terbaru berdasarkan tanggal mulai." },
+      { property: "og:title", content: "Dashboard — Project Tracker" },
+      { property: "og:description", content: "Lihat proyek terbaru berdasarkan tanggal mulai." },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const recent = [...projects]
+    .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())
+    .slice(0, 35);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+        <p className="text-sm text-muted-foreground">
+          Proyek terbaru berdasarkan tanggal mulai.
+        </p>
+      </div>
+      <ProjectGrid items={recent} />
     </div>
   );
 }
