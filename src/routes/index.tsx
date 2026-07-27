@@ -31,12 +31,7 @@ function Index() {
           className="h-20 w-auto rounded-lg border border-border bg-card/90 px-8 py-3 shadow-sm"
         />
       </div>
-      <div className="text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">
-          Proyek terbaru berdasarkan tanggal mulai.
-        </p>
-      </div>
+      <h1 className="sr-only">Dashboard Proyek</h1>
       <ProjectGrid items={recent} />
     </div>
   );
