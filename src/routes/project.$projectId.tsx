@@ -58,35 +58,17 @@ function ProjectDetail() {
           </div>
           <CardTitle className="text-2xl">{project.name}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4 text-sm">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Layers className="h-4 w-4" />
-            <span>Operasi: {project.operasi || "-"}</span>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <FileText className="h-4 w-4" />
-            <span>KTT: {project.ktt || "-"}</span>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Wallet className="h-4 w-4" />
-            <span>Nilai OK (M) HPS: {formatNilai(project.nilaiOkHps)}</span>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <CalendarDays className="h-4 w-4" />
-            <span>Periode: {formatPeriode(project.periode)}</span>
-          </div>
-          <div className="grid grid-cols-2 gap-4 border-t pt-4">
-            <div>
-              <p className="text-muted-foreground">ID Proyek</p>
-              <p className="font-medium">{project.id}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">Status</p>
-              <p className="font-medium">
-                {project.status === "open" ? "Sedang berjalan" : "Sudah selesai"}
-              </p>
-            </div>
-          </div>
+        <CardContent className="text-sm">
+          <dl className="divide-y">
+            {rows.map(({ label, value }) => (
+              <div key={label} className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt className="text-muted-foreground">{label}</dt>
+                <dd className="whitespace-pre-line font-medium sm:col-span-2">
+                  {value || "-"}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </CardContent>
       </Card>
     </div>
