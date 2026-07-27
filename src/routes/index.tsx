@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { projects } from "@/lib/projects";
 import { ProjectGrid } from "@/components/project-card";
-import logo from "@/assets/logo-project-tracker.png";
+import logoAsset from "@/assets/logo-qs-infra1.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,11 +24,11 @@ function Index() {
     <div className="space-y-6">
       <div className="flex justify-center">
         <img
-          src={logo}
-          alt="Logo Project Tracker"
-          width={1040}
-          height={150}
-          className="h-16 w-auto rounded-lg border border-border bg-card/90 px-8 py-3 shadow-sm"
+          src={logoAsset.url}
+          alt="Logo QS & Tech Support Infra 1 Subdivision"
+          width={1920}
+          height={620}
+          className="h-20 w-auto rounded-lg border border-border bg-card/90 px-8 py-3 shadow-sm"
         />
       </div>
       <div className="text-center">
