@@ -17,7 +17,7 @@ export const Route = createFileRoute("/open")({
 function OpenPage() {
   const items = projects
     .filter((p) => p.status === "open")
-    .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+    .sort((a, b) => new Date(b.periode || 0).getTime() - new Date(a.periode || 0).getTime());
 
   return (
     <div className="space-y-6">
