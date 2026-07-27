@@ -1,8 +1,8 @@
 import type { Project } from "@/lib/projects";
-import { formatDate } from "@/lib/projects";
+import { formatTenderMonth } from "@/lib/projects";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, FolderKanban } from "lucide-react";
+import { CalendarDays, FileText, FolderKanban } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 export function ProjectCard({ project }: { project: Project }) {
@@ -22,12 +22,18 @@ export function ProjectCard({ project }: { project: Project }) {
             {project.status === "open" ? "Berjalan" : "Selesai"}
           </Badge>
         </div>
-        <CardTitle className="text-base leading-snug">{project.name}</CardTitle>
+        <CardTitle className="text-base leading-snug">
+          {formatTenderMonth(project.startDate)}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="text-sm text-muted-foreground">
+      <CardContent className="space-y-2 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
           <CalendarDays className="h-4 w-4" />
-          <span>{formatDate(project.startDate)}</span>
+          <span>Bulan Tender: {formatTenderMonth(project.startDate)}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <FileText className="h-4 w-4" />
+          <span>KTT Tender: {project.kttTender}</span>
         </div>
       </CardContent>
       </Card>
