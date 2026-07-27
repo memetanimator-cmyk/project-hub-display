@@ -26,9 +26,9 @@ function Index() {
         <img
           src={logo}
           alt="Logo Project Tracker"
-          width={1152}
-          height={576}
-          className="h-20 w-auto rounded-lg border border-border bg-card/80 px-6 py-2 shadow-sm"
+          width={1040}
+          height={150}
+          className="h-16 w-auto rounded-lg border border-border bg-card/90 px-8 py-3 shadow-sm"
         />
       </div>
       <div className="text-center">
