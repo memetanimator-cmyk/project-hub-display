@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { projects, formatPeriode, formatNilai } from "@/lib/projects";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, CalendarDays, FileText, FolderKanban, Layers, Wallet } from "lucide-react";
+import { ArrowLeft, FolderKanban } from "lucide-react";
 
 export const Route = createFileRoute("/project/$projectId")({
   loader: ({ params }) => {
@@ -35,6 +35,26 @@ export const Route = createFileRoute("/project/$projectId")({
 
 function ProjectDetail() {
   const { project } = Route.useLoaderData();
+
+  const rows: { label: string; value: string }[] = [
+    { label: "Nama Proyek", value: project.name },
+    { label: "Key Status", value: project.keyStatus },
+    { label: "Operasi", value: project.operasi },
+    { label: "KAM", value: project.kam },
+    { label: "KTT", value: project.ktt },
+    { label: "Owner", value: project.owner },
+    { label: "Nilai OK (M) HPS", value: formatNilai(project.nilaiOkHps) },
+    { label: "Status", value: project.statusTender },
+    { label: "Sumber Dana", value: project.sumberDana },
+    { label: "Payment", value: project.payment },
+    { label: "Jenis Kontrak", value: project.jenisKontrak },
+    { label: "Periode", value: formatPeriode(project.periode) },
+    { label: "Periode Tender", value: project.periodeTender },
+    { label: "Pemasukan Harga", value: project.pemasukanHarga },
+    { label: "Koordinator QS", value: project.koordinatorQs },
+    { label: "Koordinator Active / Close", value: project.koordinatorStatus },
+    { label: "Status Saat Ini", value: project.statusSaatIni },
+  ];
 
   return (
     <div className="space-y-6">
