@@ -3,10 +3,16 @@ import { formatDate } from "@/lib/projects";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, FolderKanban } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <Card className="group h-full transition-all hover:-translate-y-0.5 hover:shadow-lg">
+    <Link
+      to="/project/$projectId"
+      params={{ projectId: project.id }}
+      className="block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      <Card className="group h-full cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg">
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary/10 text-primary">
@@ -24,7 +30,8 @@ export function ProjectCard({ project }: { project: Project }) {
           <span>{formatDate(project.startDate)}</span>
         </div>
       </CardContent>
-    </Card>
+      </Card>
+    </Link>
   );
 }
 
