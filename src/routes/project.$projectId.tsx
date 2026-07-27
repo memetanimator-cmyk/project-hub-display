@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { projects, formatDate, formatTenderMonth } from "@/lib/projects";
+import { projects, formatPeriode, formatNilai } from "@/lib/projects";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, CalendarDays, FileText, FolderKanban } from "lucide-react";
+import { ArrowLeft, CalendarDays, FileText, FolderKanban, Layers, Wallet } from "lucide-react";
 
 export const Route = createFileRoute("/project/$projectId")({
   loader: ({ params }) => {
@@ -19,8 +19,8 @@ export const Route = createFileRoute("/project/$projectId")({
         ],
       };
     }
-    const title = `${formatTenderMonth(loaderData.project.startDate)} — ${loaderData.project.kttTender}`;
-    const description = `Detail tender ${loaderData.project.kttTender}, bulan tender ${formatTenderMonth(loaderData.project.startDate)}.`;
+    const title = `${loaderData.project.name} — Project Tracker`;
+    const description = `Detail tender ${loaderData.project.name}, periode ${formatPeriode(loaderData.project.periode)}.`;
     return {
       meta: [
         { title },
@@ -56,20 +56,24 @@ function ProjectDetail() {
               {project.status === "open" ? "Berjalan" : "Selesai"}
             </Badge>
           </div>
-          <CardTitle className="text-2xl">{formatTenderMonth(project.startDate)}</CardTitle>
+          <CardTitle className="text-2xl">{project.name}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-sm">
           <div className="flex items-center gap-2 text-muted-foreground">
-            <CalendarDays className="h-4 w-4" />
-            <span>Bulan Tender: {formatTenderMonth(project.startDate)}</span>
+            <Layers className="h-4 w-4" />
+            <span>Operasi: {project.operasi || "-"}</span>
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <FileText className="h-4 w-4" />
-            <span>KTT Tender: {project.kttTender}</span>
+            <span>KTT: {project.ktt || "-"}</span>
+          </div>
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Wallet className="h-4 w-4" />
+            <span>Nilai OK (M) HPS: {formatNilai(project.nilaiOkHps)}</span>
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <CalendarDays className="h-4 w-4" />
-            <span>Tanggal mulai: {formatDate(project.startDate)}</span>
+            <span>Periode: {formatPeriode(project.periode)}</span>
           </div>
           <div className="grid grid-cols-2 gap-4 border-t pt-4">
             <div>

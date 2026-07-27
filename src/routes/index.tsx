@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const recent = [...projects]
-    .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())
+    .sort((a, b) => new Date(b.periode || 0).getTime() - new Date(a.periode || 0).getTime())
     .slice(0, 35);
 
   return (
