@@ -1,8 +1,8 @@
 import type { Project } from "@/lib/projects";
-import { formatTenderMonth } from "@/lib/projects";
+import { formatPeriode, formatNilai } from "@/lib/projects";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, FileText, FolderKanban } from "lucide-react";
+import { CalendarDays, FileText, FolderKanban, Layers, Wallet } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 export function ProjectCard({ project }: { project: Project }) {
@@ -23,17 +23,25 @@ export function ProjectCard({ project }: { project: Project }) {
           </Badge>
         </div>
         <CardTitle className="text-base leading-snug">
-          {formatTenderMonth(project.startDate)}
+          {project.name}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
-          <CalendarDays className="h-4 w-4" />
-          <span>Bulan Tender: {formatTenderMonth(project.startDate)}</span>
+          <Layers className="h-4 w-4 shrink-0" />
+          <span>Operasi: {project.operasi || "-"}</span>
         </div>
         <div className="flex items-center gap-2">
-          <FileText className="h-4 w-4" />
-          <span>KTT Tender: {project.kttTender}</span>
+          <FileText className="h-4 w-4 shrink-0" />
+          <span>KTT: {project.ktt || "-"}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Wallet className="h-4 w-4 shrink-0" />
+          <span>Nilai OK (M) HPS: {formatNilai(project.nilaiOkHps)}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <CalendarDays className="h-4 w-4 shrink-0" />
+          <span>Periode: {formatPeriode(project.periode)}</span>
         </div>
       </CardContent>
       </Card>
