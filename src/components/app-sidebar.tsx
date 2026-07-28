@@ -1,5 +1,7 @@
-import { Link, useRouterState } from "@tanstack/react-router";
-import { Layers, Layers2, LayoutDashboard } from "lucide-react";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Layers, Layers2, LayoutDashboard, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import {
   Sidebar,
   SidebarContent,
@@ -10,6 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 const items = [
@@ -20,6 +23,19 @@ const items = [
 
 export function AppSidebar() {
   const currentPath = useRouterState({ select: (r) => r.location.pathname });
+  const navigate = useNavigate();
+  const { state, setOpen } = useSidebar();
+  const collapsed = state === "collapsed";
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    if (collapsed) setQuery("");
+  }, [collapsed]);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    navigate({ to: "/", search: { q: query.trim() } });
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -32,6 +48,33 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Pencarian</SidebarGroupLabel>
+          <SidebarGroupContent>
+            {collapsed ? (
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Cari proyek">
+                    <Search className="h-4 w-4" />
+                    <span>Cari proyek</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            ) : (
+              <form onSubmit={submit} className="relative px-1">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Cari proyek..."
+                  aria-label="Cari proyek"
+                  className="h-9 pl-9"
+                />
+              </form>
+            )}
+          </SidebarGroupContent>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
