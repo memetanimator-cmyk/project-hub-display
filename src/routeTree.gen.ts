@@ -9,21 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as OpenRouteImport } from './routes/open'
-import { Route as ClosedRouteImport } from './routes/closed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectProjectIdRouteImport } from './routes/project.$projectId'
 
-const OpenRoute = OpenRouteImport.update({
-  id: '/open',
-  path: '/open',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ClosedRoute = ClosedRouteImport.update({
-  id: '/closed',
-  path: '/closed',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,54 +25,32 @@ const ProjectProjectIdRoute = ProjectProjectIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/closed': typeof ClosedRoute
-  '/open': typeof OpenRoute
   '/project/$projectId': typeof ProjectProjectIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/closed': typeof ClosedRoute
-  '/open': typeof OpenRoute
   '/project/$projectId': typeof ProjectProjectIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/closed': typeof ClosedRoute
-  '/open': typeof OpenRoute
   '/project/$projectId': typeof ProjectProjectIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/closed' | '/open' | '/project/$projectId'
+  fullPaths: '/' | '/project/$projectId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/closed' | '/open' | '/project/$projectId'
-  id: '__root__' | '/' | '/closed' | '/open' | '/project/$projectId'
+  to: '/' | '/project/$projectId'
+  id: '__root__' | '/' | '/project/$projectId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ClosedRoute: typeof ClosedRoute
-  OpenRoute: typeof OpenRoute
   ProjectProjectIdRoute: typeof ProjectProjectIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/open': {
-      id: '/open'
-      path: '/open'
-      fullPath: '/open'
-      preLoaderRoute: typeof OpenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/closed': {
-      id: '/closed'
-      path: '/closed'
-      fullPath: '/closed'
-      preLoaderRoute: typeof ClosedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -104,20 +70,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ClosedRoute: ClosedRoute,
-  OpenRoute: OpenRoute,
   ProjectProjectIdRoute: ProjectProjectIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
