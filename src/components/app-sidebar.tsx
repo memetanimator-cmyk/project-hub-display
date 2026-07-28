@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { FolderOpen, FolderCheck, LayoutDashboard } from "lucide-react";
+import { Layers, Layers2, LayoutDashboard } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -13,9 +13,9 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Open Proyek", url: "/open", icon: FolderOpen },
-  { title: "Closed Proyek", url: "/closed", icon: FolderCheck },
+  { title: "Dashboard", url: "/", params: undefined, icon: LayoutDashboard },
+  { title: "Operasi 1", url: "/operasi/$op", params: { op: "1" }, icon: Layers },
+  { title: "Operasi 2", url: "/operasi/$op", params: { op: "2" }, icon: Layers2 },
 ];
 
 export function AppSidebar() {
@@ -38,8 +38,19 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={currentPath === item.url}>
-                    <Link to={item.url} className="flex items-center gap-2">
+                  <SidebarMenuButton
+                    asChild
+                    isActive={
+                      item.params
+                        ? currentPath === `/operasi/${item.params.op}`
+                        : currentPath === item.url
+                    }
+                  >
+                    <Link
+                      to={item.url}
+                      params={item.params as never}
+                      className="flex items-center gap-2"
+                    >
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
                     </Link>
