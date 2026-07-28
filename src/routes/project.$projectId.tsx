@@ -59,11 +59,12 @@ function ProjectDetail() {
   return (
     <div className="space-y-6">
       <Link
-        to={project.status === "open" ? "/open" : "/closed"}
+        to="/operasi/$op"
+        params={{ op: project.operasi === "Operasi 2" ? "2" : "1" }}
         className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
-        Kembali ke {project.status === "open" ? "Open" : "Closed"} Proyek
+        Kembali ke {project.operasi || "Operasi 1"}
       </Link>
 
       <Card className="max-w-2xl">
