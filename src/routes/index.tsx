@@ -4,6 +4,9 @@ import { ProjectGrid } from "@/components/project-card";
 import logoAsset from "@/assets/logo-qs-infra1.png.asset.json";
 
 export const Route = createFileRoute("/")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    q: typeof search.q === "string" ? search.q : "",
+  }),
   head: () => ({
     meta: [
       { title: "Dashboard — Project Tracker" },
@@ -16,9 +19,18 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const recent = [...projects]
-    .sort((a, b) => new Date(b.periode || 0).getTime() - new Date(a.periode || 0).getTime())
-    .slice(0, 35);
+  const { q } = Route.useSearch();
+  const query = q.trim().toLowerCase();
+
+  const sorted = [...projects].sort(
+    (a, b) => new Date(b.periode || 0).getTime() - new Date(a.periode || 0).getTime(),
+  );
+
+  const recent = query
+    ? sorted.filter((p) =>
+        [p.name, p.operasi, p.ktt].some((v) => (v || "").toLowerCase().includes(query)),
+      )
+    : sorted.slice(0, 35);
 
   return (
     <div className="space-y-6">
@@ -32,7 +44,15 @@ function Index() {
         />
       </div>
       <h1 className="sr-only">Dashboard Proyek</h1>
+      {query && (
+        <p className="text-sm text-muted-foreground">
+          Hasil pencarian "{q}" ({recent.length} proyek).
+        </p>
+      )}
       <ProjectGrid items={recent} />
+      {query && recent.length === 0 && (
+        <p className="text-sm text-muted-foreground">Proyek tidak ditemukan.</p>
+      )}
     </div>
   );
 }
