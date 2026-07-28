@@ -9,21 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as OpenRouteImport } from './routes/open'
-import { Route as ClosedRouteImport } from './routes/closed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectProjectIdRouteImport } from './routes/project.$projectId'
+import { Route as OperasiOpRouteImport } from './routes/operasi.$op'
 
-const OpenRoute = OpenRouteImport.update({
-  id: '/open',
-  path: '/open',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ClosedRoute = ClosedRouteImport.update({
-  id: '/closed',
-  path: '/closed',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -34,57 +23,44 @@ const ProjectProjectIdRoute = ProjectProjectIdRouteImport.update({
   path: '/project/$projectId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OperasiOpRoute = OperasiOpRouteImport.update({
+  id: '/operasi/$op',
+  path: '/operasi/$op',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/closed': typeof ClosedRoute
-  '/open': typeof OpenRoute
+  '/operasi/$op': typeof OperasiOpRoute
   '/project/$projectId': typeof ProjectProjectIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/closed': typeof ClosedRoute
-  '/open': typeof OpenRoute
+  '/operasi/$op': typeof OperasiOpRoute
   '/project/$projectId': typeof ProjectProjectIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/closed': typeof ClosedRoute
-  '/open': typeof OpenRoute
+  '/operasi/$op': typeof OperasiOpRoute
   '/project/$projectId': typeof ProjectProjectIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/closed' | '/open' | '/project/$projectId'
+  fullPaths: '/' | '/operasi/$op' | '/project/$projectId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/closed' | '/open' | '/project/$projectId'
-  id: '__root__' | '/' | '/closed' | '/open' | '/project/$projectId'
+  to: '/' | '/operasi/$op' | '/project/$projectId'
+  id: '__root__' | '/' | '/operasi/$op' | '/project/$projectId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ClosedRoute: typeof ClosedRoute
-  OpenRoute: typeof OpenRoute
+  OperasiOpRoute: typeof OperasiOpRoute
   ProjectProjectIdRoute: typeof ProjectProjectIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/open': {
-      id: '/open'
-      path: '/open'
-      fullPath: '/open'
-      preLoaderRoute: typeof OpenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/closed': {
-      id: '/closed'
-      path: '/closed'
-      fullPath: '/closed'
-      preLoaderRoute: typeof ClosedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -99,13 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectProjectIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/operasi/$op': {
+      id: '/operasi/$op'
+      path: '/operasi/$op'
+      fullPath: '/operasi/$op'
+      preLoaderRoute: typeof OperasiOpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ClosedRoute: ClosedRoute,
-  OpenRoute: OpenRoute,
+  OperasiOpRoute: OperasiOpRoute,
   ProjectProjectIdRoute: ProjectProjectIdRoute,
 }
 export const routeTree = rootRouteImport
