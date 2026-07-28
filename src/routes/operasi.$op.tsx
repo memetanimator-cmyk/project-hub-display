@@ -1,5 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
 import { projects, formatPeriode, formatNilai } from "@/lib/projects";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -37,9 +40,18 @@ export const Route = createFileRoute("/operasi/$op")({
 
 function OperasiPage() {
   const { label } = Route.useLoaderData();
-  const items = projects
-    .filter((p) => p.operasi === label)
-    .sort((a, b) => new Date(b.periode || 0).getTime() - new Date(a.periode || 0).getTime());
+  const [query, setQuery] = useState("");
+
+  const items = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return projects
+      .filter((p) => p.operasi === label)
+      .filter((p) => (q ? (p.name || "").toLowerCase().includes(q) : true))
+      .sort(
+        (a, b) =>
+          new Date(b.periode || 0).getTime() - new Date(a.periode || 0).getTime(),
+      );
+  }, [label, query]);
 
   return (
     <div className="space-y-6">
@@ -48,6 +60,18 @@ function OperasiPage() {
         <p className="text-sm text-muted-foreground">
           Daftar nama proyek pada {label} ({items.length}).
         </p>
+      </div>
+
+      <div className="relative max-w-sm">
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Cari nama proyek..."
+          aria-label="Cari nama proyek"
+          className="pl-9"
+        />
       </div>
 
       <div className="overflow-hidden rounded-lg border bg-card">
@@ -82,7 +106,7 @@ function OperasiPage() {
             {items.length === 0 && (
               <TableRow>
                 <TableCell colSpan={5} className="text-center text-muted-foreground">
-                  Tidak ada proyek.
+                  {query ? "Proyek tidak ditemukan." : "Tidak ada proyek."}
                 </TableCell>
               </TableRow>
             )}
