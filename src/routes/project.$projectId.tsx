@@ -74,7 +74,7 @@ function ProjectDetail() {
               <FolderKanban className="h-5 w-5" />
             </div>
             <Badge variant={project.status === "open" ? "default" : "secondary"}>
-              {project.status === "open" ? "Berjalan" : "Selesai"}
+              {project.status === "open" ? "Active" : "Close"}
             </Badge>
           </div>
           <CardTitle className="text-2xl">{project.name}</CardTitle>
