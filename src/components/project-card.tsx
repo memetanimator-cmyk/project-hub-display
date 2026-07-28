@@ -19,7 +19,7 @@ export function ProjectCard({ project }: { project: Project }) {
             <FolderKanban className="h-4 w-4" />
           </div>
           <Badge variant={project.status === "open" ? "default" : "secondary"}>
-            {project.status === "open" ? "Berjalan" : "Selesai"}
+            {project.status === "open" ? "Active" : "Close"}
           </Badge>
         </div>
         <CardTitle className="text-base leading-snug">
