@@ -1,17 +1,16 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { projects, formatPeriode, formatNilai } from "@/lib/projects";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { projects as defaultProjects, formatPeriode, formatNilai } from "@/lib/projects";
+import { useProjects } from "@/lib/projects-store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, FolderKanban } from "lucide-react";
 
 export const Route = createFileRoute("/project/$projectId")({
-  loader: ({ params }) => {
-    const project = projects.find((p) => p.id === params.projectId);
-    if (!project) throw notFound();
-    return { project };
-  },
+  loader: ({ params }) => ({
+    project: defaultProjects.find((p) => p.id === params.projectId) ?? null,
+  }),
   head: ({ loaderData }) => {
-    if (!loaderData) {
+    if (!loaderData?.project) {
       return {
         meta: [
           { title: "Proyek tidak ditemukan — Project Tracker" },
@@ -34,7 +33,21 @@ export const Route = createFileRoute("/project/$projectId")({
 });
 
 function ProjectDetail() {
-  const { project } = Route.useLoaderData();
+  const { projectId } = Route.useParams();
+  const projects = useProjects();
+  const project = projects.find((p) => p.id === projectId);
+
+  if (!project) {
+    return (
+      <div className="space-y-4">
+        <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="h-4 w-4" />
+          Kembali ke Dashboard
+        </Link>
+        <p className="text-sm text-muted-foreground">Proyek tidak ditemukan.</p>
+      </div>
+    );
+  }
 
   const rows: { label: string; value: string }[] = [
     { label: "Nama Proyek", value: project.name },
