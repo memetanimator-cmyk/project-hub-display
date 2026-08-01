@@ -62,8 +62,16 @@ export async function parseTenderWorkbook(file: File): Promise<Project[]> {
       if (key) record[key] = toText(row[c]);
     });
     if (!record.name) continue;
-    // Baris pemisah (mis. nama koordinator) hanya berisi nama tanpa data lain.
-    const hasDetail = Object.entries(record).some(([k, v]) => k !== "name" && v !== "");
+    // Baris pemisah (mis. nama koordinator) tidak punya data tender.
+    const hasDetail = [
+      record.operasi,
+      record.ktt,
+      record.nilaiOkHps,
+      record.periode,
+      record.statusTender,
+      record.owner,
+      record.kam,
+    ].some((v) => v);
     if (!hasDetail) continue;
 
     const koordinatorStatus = record.koordinatorStatus || "";
