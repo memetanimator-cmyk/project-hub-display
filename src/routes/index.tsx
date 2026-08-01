@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { projects } from "@/lib/projects";
+import { useProjects } from "@/lib/projects-store";
 import { ProjectGrid } from "@/components/project-card";
+import { ImportExcel } from "@/components/import-excel";
 import logoAsset from "@/assets/logo-qs-infra1.png.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { q } = Route.useSearch();
+  const projects = useProjects();
   const query = q.trim().toLowerCase();
 
   const sorted = [...projects].sort(
@@ -44,6 +46,7 @@ function Index() {
         />
       </div>
       <h1 className="sr-only">Dashboard Proyek</h1>
+      <ImportExcel />
       {query && (
         <p className="text-sm text-muted-foreground">
           Hasil pencarian "{q}" ({recent.length} proyek).
