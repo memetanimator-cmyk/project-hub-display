@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { projects, formatPeriode, formatNilai } from "@/lib/projects";
+import { formatPeriode, formatNilai } from "@/lib/projects";
+import { useProjects } from "@/lib/projects-store";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import {
@@ -40,6 +41,7 @@ export const Route = createFileRoute("/operasi/$op")({
 
 function OperasiPage() {
   const { label } = Route.useLoaderData();
+  const projects = useProjects();
   const [query, setQuery] = useState("");
 
   const items = useMemo(() => {
@@ -51,7 +53,7 @@ function OperasiPage() {
         (a, b) =>
           new Date(b.periode || 0).getTime() - new Date(a.periode || 0).getTime(),
       );
-  }, [label, query]);
+  }, [label, query, projects]);
 
   return (
     <div className="space-y-6">
