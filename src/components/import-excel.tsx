@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { FileUp, RotateCcw } from "lucide-react";
+import { FileUp } from "lucide-react";
 import { parseTenderWorkbook } from "@/lib/tender-xlsx";
-import { resetProjects, setImportedProjects, useImportMeta } from "@/lib/projects-store";
+import { setImportedProjects, useImportMeta } from "@/lib/projects-store";
 
 export function ImportExcel() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -55,12 +55,6 @@ export function ImportExcel() {
             <FileUp className="h-4 w-4" />
             {busy ? "Memproses..." : "Pilih file Excel"}
           </Button>
-          {meta && (
-            <Button size="sm" variant="outline" onClick={() => resetProjects()}>
-              <RotateCcw className="h-4 w-4" />
-              Reset
-            </Button>
-          )}
         </div>
       </div>
       {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
