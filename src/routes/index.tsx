@@ -30,7 +30,9 @@ function Index() {
 
   const recent = query
     ? sorted.filter((p) =>
-        [p.name, p.operasi, p.ktt].some((v) => (v || "").toLowerCase().includes(query)),
+        Object.entries(p)
+          .filter(([key]) => key !== "id")
+          .some(([, v]) => typeof v === "string" && v.toLowerCase().includes(query)),
       )
     : sorted.slice(0, 35);
 
