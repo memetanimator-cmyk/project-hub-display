@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { projects as defaultProjects, formatPeriode, formatNilai } from "@/lib/projects";
-import { useProjects } from "@/lib/projects-store";
+import { formatPeriode, formatNilai } from "@/lib/projects";
+import { getProjects, useProjects } from "@/lib/projects-store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, FolderKanban } from "lucide-react";
 
 export const Route = createFileRoute("/project/$projectId")({
   loader: ({ params }) => ({
-    project: defaultProjects.find((p) => p.id === params.projectId) ?? null,
+    project: getProjects().find((p) => p.id === params.projectId) ?? null,
   }),
   head: ({ loaderData }) => {
     if (!loaderData?.project) {

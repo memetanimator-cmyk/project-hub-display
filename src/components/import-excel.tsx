@@ -15,6 +15,8 @@ export function ImportExcel() {
     setError("");
     try {
       const items = await parseTenderWorkbook(file);
+      // File baru selalu menimpa data yang sudah ada (import sebelumnya / data bawaan).
+      resetProjects();
       setImportedProjects(items, {
         fileName: file.name,
         importedAt: new Date().toISOString(),
