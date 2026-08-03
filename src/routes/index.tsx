@@ -24,16 +24,23 @@ function Index() {
   const projects = useProjects();
   const query = q.trim().toLowerCase();
 
-  const sorted = [...projects].sort(
-    (a, b) => new Date(b.periode || 0).getTime() - new Date(a.periode || 0).getTime(),
-  );
+  const time = (v: string) => {
+    const t = new Date(v || "").getTime();
+    return Number.isNaN(t) ? -Infinity : t;
+  };
+  const byNewest = (a: { periode: string }, b: { periode: string }) =>
+    time(b.periode) - time(a.periode);
+
+  const sorted = [...projects].sort(byNewest);
 
   const recent = query
-    ? sorted.filter((p) =>
-        Object.entries(p)
-          .filter(([key]) => key !== "id")
-          .some(([, v]) => typeof v === "string" && v.toLowerCase().includes(query)),
-      )
+    ? sorted
+        .filter((p) =>
+          Object.entries(p)
+            .filter(([key]) => key !== "id")
+            .some(([, v]) => typeof v === "string" && v.toLowerCase().includes(query)),
+        )
+        .sort(byNewest)
     : sorted.slice(0, 35);
 
   return (
