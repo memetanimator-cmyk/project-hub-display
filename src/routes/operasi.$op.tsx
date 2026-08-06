@@ -48,7 +48,15 @@ function OperasiPage() {
     const q = query.trim().toLowerCase();
     return projects
       .filter((p) => p.operasi === label)
-      .filter((p) => (q ? (p.name || "").toLowerCase().includes(q) : true))
+      .filter((p) =>
+        q
+          ? Object.entries(p)
+              .filter(([key]) => key !== "id")
+              .some(
+                ([, v]) => typeof v === "string" && v.toLowerCase().includes(q),
+              )
+          : true,
+      )
       .sort(
         (a, b) =>
           new Date(b.periode || 0).getTime() - new Date(a.periode || 0).getTime(),
@@ -70,8 +78,8 @@ function OperasiPage() {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Cari nama proyek..."
-          aria-label="Cari nama proyek"
+          placeholder="Cari semua kolom..."
+          aria-label="Cari semua kolom"
           className="pl-9"
         />
       </div>
