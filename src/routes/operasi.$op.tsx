@@ -78,8 +78,8 @@ function OperasiPage() {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Cari nama proyek..."
-          aria-label="Cari nama proyek"
+          placeholder="Cari semua kolom..."
+          aria-label="Cari semua kolom"
           className="pl-9"
         />
       </div>
