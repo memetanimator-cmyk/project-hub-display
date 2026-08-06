@@ -40,7 +40,7 @@ function ProjectDetail() {
   if (!project) {
     return (
       <div className="space-y-4">
-        <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <Link to="/" search={{ q: "" }} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" />
           Kembali ke Dashboard
         </Link>
